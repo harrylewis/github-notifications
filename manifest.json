@@ -2,5 +2,15 @@
   "name": "GitHub Notifications Alert",
   "description": "Add a favicon alert to GitHub Notifications",
   "version": "0.1",
-  "manifest_version": 2
+  "manifest_version": 2,
+  "content_scripts": [
+    {
+      "matches": [
+        "https://github.com/notifications/beta"
+      ],
+      "js": [
+        "extension.js"
+      ]
+    }
+  ]
 }
