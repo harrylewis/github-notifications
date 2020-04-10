@@ -1,0 +1,6 @@
+{
+  "name": "GitHub Notifications Alert",
+  "description": "Add a favicon alert to GitHub Notifications",
+  "version": "0.1",
+  "manifest_version": 2
+}
