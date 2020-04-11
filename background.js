@@ -9,6 +9,7 @@ var githubNotificationIndicator = {
       tabs.forEach(this.tabHandler.bind(this));
     }.bind(this));
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
+    chrome.tabs.onUpdated.addListener(this.tabUpdatedHandler.bind(this));
   },
 
   Timer: function(fn, interval) {
@@ -55,6 +56,31 @@ var githubNotificationIndicator = {
     if (timer) timer.stop();
 
     delete this.refreshTimers[tabId];
+  },
+
+  tabUpdatedHandler: function(tabId, changeInfo) {
+    var url = changeInfo.url;
+
+    if (!url) return;
+
+    var timer = this.refreshTimers[tabId];
+
+    if (timer) {
+      console.log('stop');
+      timer.stop();
+      delete this.refreshTimers[tabId];
+
+      return;
+    }
+
+    if (url != this.NOTIFICATIONS_URL) return;
+
+    var interval = this.minutesInMilliseconds(this.REFRESH_IN_MINUTES);
+
+    this.refreshTimers[tabId] = new this.Timer(function() {
+      console.log('tick');
+      chrome.tabs.reload(tabId);
+    }, interval);
   },
 };
 
