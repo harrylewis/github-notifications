@@ -9,6 +9,31 @@ var githubNotificationIndicator = {
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler);
   },
 
+  Timer: function(fn, interval) {
+    var timerObject = setInterval(fn, interval);
+
+    this.start = function() {
+      if (!timerObject) {
+        timerObject = setInterval(fn, interval);
+      }
+
+      return this;
+    };
+
+    this.stop = function() {
+      if (timerObject) {
+        clearInterval(timerObject);
+        timerObject = null;
+      }
+
+      return this;
+    };
+
+    this.reset = function() {
+      return this.stop().start();
+    };
+  },
+
   tabIds: function() {
     var refreshTimers = githubNotificationIndicator.refreshTimers;
 
