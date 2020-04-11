@@ -3,6 +3,7 @@ var githubNotificationIndicator = {
   REFRESH_IN_MINUTES: 0.1,
 
   refreshTimers: {},
+  activeTabId: undefined,
 
   init: function() {
     chrome.tabs.query({ url: this.NOTIFICATIONS_URL }, function(tabs) {
@@ -10,6 +11,7 @@ var githubNotificationIndicator = {
     }.bind(this));
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
     chrome.tabs.onUpdated.addListener(this.tabUpdatedHandler.bind(this));
+    chrome.tabs.onActivated.addListener(this.tabActivatedHandler.bind(this));
   },
 
   Timer: function(fn, interval) {
@@ -81,6 +83,42 @@ var githubNotificationIndicator = {
       console.log('tick');
       chrome.tabs.reload(tabId);
     }, interval);
+  },
+
+  tabActivatedHandler: function(activeInfo) {
+    var previousActiveTabId = this.activeTabId;
+    var currentActiveTabId = activeInfo.tabId;
+    var previousTimer = this.refreshTimers[previousActiveTabId];
+    var currentTimer = this.refreshTimers[currentActiveTabId];
+
+    if (currentTimer) this.stopAllTimers();
+    if (previousTimer && !currentTimer) this.restartAllTimers();
+
+    this.activeTabId = activeInfo.tabId;
+  },
+
+  stopAllTimers: function() {
+    console.log('');
+    console.log('Stopping all timers.');
+    console.log('');
+
+    var timers = Object.values(this.refreshTimers);
+
+    timers.forEach(function(timer) {
+      timer.stop();
+    });
+  },
+
+  restartAllTimers: function() {
+    console.log('');
+    console.log('Restarting all timers.');
+    console.log('');
+
+    var timers = Object.values(this.refreshTimers);
+
+    timers.forEach(function(timer) {
+      timer.reset();
+    });
   },
 };
 
