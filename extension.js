@@ -34,7 +34,7 @@ var githubNotificationIndicator = {
   },
 
   notifications: function() {
-    return document.getElementsByClassName('notifications-list-item');
+    return document.getElementsByClassName('notifications-list-item notification-unread');
   },
 
   notificationsPresent: function() {
