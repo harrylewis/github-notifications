@@ -1,11 +1,11 @@
 var githubNotificationIndicator = {
-  TAB_QUERY: { url: 'https://github.com/notifications/beta' },
-  REFRESH_IN_MINUTES: 0.05,
+  NOTIFICATIONS_URL: 'https://github.com/notifications/beta',
+  REFRESH_IN_MINUTES: 0.1,
 
   refreshTimers: {},
 
   init: function() {
-    chrome.tabs.query(this.TAB_QUERY, function(tabs) {
+    chrome.tabs.query({ url: this.NOTIFICATIONS_URL }, function(tabs) {
       tabs.forEach(this.tabHandler.bind(this));
     }.bind(this));
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
