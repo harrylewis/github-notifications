@@ -93,6 +93,20 @@ var githubNotificationIndicator = {
     this.activeTabId = activeInfo.tabId;
   },
 
+  addTimer: function(tabId) {
+    console.log('--------------------');
+    console.log('New timer created for tab ID:' + tabId + '.');
+
+    var interval = this.REFRESH_IN_MILLISECONDS;
+    var timer = new this.Timer(function() {
+      console.log('--------------------');
+      console.log('Tick:' + tabId + '.');
+      chrome.tabs.reload(tabId);
+    });
+
+    this.refreshTimers[tabId] = timer.stop();
+  },
+
   stopTimers: function() {
     console.log('--------------------');
     console.log('Stopping all timers.');
