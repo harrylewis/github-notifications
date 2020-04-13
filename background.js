@@ -92,7 +92,7 @@ var githubNotificationIndicator = {
     var currentTimer = this.refreshTimers[currentActiveTabId];
 
     if (currentTimer) this.stopTimers();
-    if (previousTimer && !currentTimer) this.restartAllTimers();
+    if (previousTimer && !currentTimer) this.restartTimers();
 
     this.activeTabId = activeInfo.tabId;
   },
@@ -108,7 +108,7 @@ var githubNotificationIndicator = {
     });
   },
 
-  restartAllTimers: function() {
+  restartTimers: function() {
     console.log('--------------------');
     console.log('Restarting all timers.');
 
