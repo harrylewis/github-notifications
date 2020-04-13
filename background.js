@@ -1,6 +1,6 @@
 var githubNotificationIndicator = {
   NOTIFICATIONS_URL: 'https://github.com/notifications/beta',
-  REFRESH_IN_MINUTES: 0.1,
+  REFRESH_IN_MILLISECONDS: 6000,
 
   refreshTimers: {},
   activeTabId: undefined,
@@ -39,13 +39,9 @@ var githubNotificationIndicator = {
     };
   },
 
-  minutesInMilliseconds: function(minutes) {
-    return minutes * 60000;
-  },
-
   tabHandler: function(tab) {
     var tabId = tab.id;
-    var interval = this.minutesInMilliseconds(this.REFRESH_IN_MINUTES);
+    var interval = this.REFRESH_IN_MILLISECONDS;
 
     this.refreshTimers[tabId] = new this.Timer(function() {
       chrome.tabs.reload(tabId);
@@ -77,7 +73,7 @@ var githubNotificationIndicator = {
 
     if (url != this.NOTIFICATIONS_URL) return;
 
-    var interval = this.minutesInMilliseconds(this.REFRESH_IN_MINUTES);
+    var interval = this.REFRESH_IN_MINUTES;
 
     this.refreshTimers[tabId] = new this.Timer(function() {
       console.log('tick');
