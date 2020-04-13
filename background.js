@@ -73,7 +73,7 @@ var githubNotificationIndicator = {
 
     if (url != this.NOTIFICATIONS_URL) return;
 
-    var interval = this.REFRESH_IN_MINUTES;
+    var interval = this.REFRESH_IN_MILLISECONDS;
 
     this.refreshTimers[tabId] = new this.Timer(function() {
       console.log('tick');
