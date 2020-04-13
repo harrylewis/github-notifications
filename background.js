@@ -107,6 +107,17 @@ var githubNotificationIndicator = {
     this.refreshTimers[tabId] = timer.stop();
   },
 
+  removeTimer: function(tabId) {
+    console.log('--------------------');
+    console.log('Timer removed for tab ID:' + tabId + '.');
+
+    var timer = this.refreshTimers[tabId];
+
+    if (timer) timer.stop();
+
+    delete this.refreshTimers[tabId];
+  },
+
   stopTimers: function() {
     console.log('--------------------');
     console.log('Stopping all timers.');
