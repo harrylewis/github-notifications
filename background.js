@@ -91,13 +91,13 @@ var githubNotificationIndicator = {
     var previousTimer = this.refreshTimers[previousActiveTabId];
     var currentTimer = this.refreshTimers[currentActiveTabId];
 
-    if (currentTimer) this.stopAllTimers();
+    if (currentTimer) this.stopTimers();
     if (previousTimer && !currentTimer) this.restartAllTimers();
 
     this.activeTabId = activeInfo.tabId;
   },
 
-  stopAllTimers: function() {
+  stopTimers: function() {
     console.log('--------------------');
     console.log('Stopping all timers.');
 
