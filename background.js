@@ -98,9 +98,8 @@ var githubNotificationIndicator = {
   },
 
   stopAllTimers: function() {
-    console.log('');
+    console.log('--------------------');
     console.log('Stopping all timers.');
-    console.log('');
 
     var timers = Object.values(this.refreshTimers);
 
@@ -110,9 +109,8 @@ var githubNotificationIndicator = {
   },
 
   restartAllTimers: function() {
-    console.log('');
+    console.log('--------------------');
     console.log('Restarting all timers.');
-    console.log('');
 
     var timers = Object.values(this.refreshTimers);
 
