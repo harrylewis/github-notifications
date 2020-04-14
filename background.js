@@ -3,7 +3,6 @@ var githubNotificationIndicator = {
   REFRESH_IN_MILLISECONDS: 6000,
 
   refreshTimers: {},
-  activeTabId: undefined,
   machine: undefined,
 
   init: function() {
