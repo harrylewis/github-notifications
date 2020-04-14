@@ -187,6 +187,10 @@ var githubNotificationIndicator = {
     console.log('New tab created.');
   },
 
+  timers: function() {
+    return Object.values(this.refreshTimers);
+  },
+
   addTimer: function(tabId) {
     console.log('--------------------');
     console.log('New timer created for tab ID:' + tabId + '.');
@@ -216,9 +220,7 @@ var githubNotificationIndicator = {
     console.log('--------------------');
     console.log('Stopping all timers.');
 
-    var timers = Object.values(this.refreshTimers);
-
-    timers.forEach(function(timer) {
+    this.timers().forEach(function(timer) {
       timer.stop();
     });
   },
@@ -227,9 +229,7 @@ var githubNotificationIndicator = {
     console.log('--------------------');
     console.log('Restarting all timers.');
 
-    var timers = Object.values(this.refreshTimers);
-
-    timers.forEach(function(timer) {
+    this.timers().forEach(function(timer) {
       timer.reset();
     });
   },
