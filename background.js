@@ -49,10 +49,15 @@ var githubNotificationIndicator = {
     var STATE_STOPPED = 'state_stopped';
     var state = STATE_SETUP;
 
-    this.INPUT_CREATED = 'input_created';
-    this.INPUT_UPDATED = 'input_updated';
-    this.INPUT_REMOVED = 'input_removed';
-    this.INPUT_ACTIVATED = 'input_activated';
+    var INPUT_CREATED = 'input_created';
+    var INPUT_UPDATED = 'input_updated';
+    var INPUT_REMOVED = 'input_removed';
+    var INPUT_ACTIVATED = 'input_activated';
+
+    this.INPUT_CREATED = INPUT_CREATED;
+    this.INPUT_UPDATED = INPUT_UPDATED;
+    this.INPUT_REMOVED = INPUT_REMOVED;
+    this.INPUT_ACTIVATED = INPUT_ACTIVATED;
 
     var TARGET_URL = 'https://github.com/notifications/beta';
 
@@ -79,21 +84,57 @@ var githubNotificationIndicator = {
         case STATE_SETUP:
           if (targetContext) {
             stopTimers();
+            state = STATE_STOPPED;
           } else {
             restartTimers();
+            state = STATE_RUNNING;
           }
-
-          state = targetContext ? STATE_STOPPED : STATE_RUNNING;
 
           break;
         case STATE_RUNNING:
-          
+          switch (input) {
+            case INPUT_ACTIVATED:
+              if (targetContext) {
+                stopTimers();
+                state = STATE_STOPPED;
+              }
+
+              break;
+            case INPUT_UPDATED:
+              if (targetContext) {
+                addTimer(tabId);
+                stopTimers();
+                state = STATE_STOPPED;
+              }
+
+              break;
+          }
           break;
         case STATE_STOPPED:
+          switch (input) {
+            case INPUT_ACTIVATED:
+              if (!targetContext) {
+                restartTimers();
+                state = STATE_RUNNING;
+              }
+
+              break;
+            case INPUT_REMOVED:
+              removeTimer(tabId);
+
+              break;
+            case INPUT_UPDATED:
+              if (!targetContext) {
+                removeTimer(tabId);
+                restartTimers();
+                state = STATE_RUNNING;
+              }
+
+              break;
+          }
+
           break;
       }
-
-      console.log(state);
 
       return this;
     };
