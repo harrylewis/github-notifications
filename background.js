@@ -191,6 +191,10 @@ var githubNotificationIndicator = {
     return Object.values(this.refreshTimers);
   },
 
+  tabIds: function() {
+    return Object.keys(this.refreshTimers);
+  },
+
   addTimer: function(tabId) {
     console.log('--------------------');
     console.log('New timer created for tab ID:' + tabId + '.');
