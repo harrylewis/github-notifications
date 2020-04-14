@@ -108,7 +108,7 @@ var githubNotificationIndicator = {
       console.log('--------------------');
       console.log('Tick:' + tabId + '.');
       chrome.tabs.reload(tabId);
-    });
+    }, interval);
 
     this.refreshTimers[tabId] = timer.stop();
   },
