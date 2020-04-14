@@ -2,3 +2,7 @@
 
 A lightweight Chrome extension that adds a notification indicator to your
 GitHub Notifications page.
+
+# TODO
+
++ [x] Implement MVP
