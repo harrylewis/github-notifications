@@ -1,2 +1,4 @@
-# github-notifications
-A Chrome extension to decorate the GitHub Notifications page with a favicon alert
+# <img src="icon128.png" width="30" align="left" /> GitHub Notifications
+
+A lightweight Chrome extension that adds a notification indicator to your
+GitHub Notifications page.
