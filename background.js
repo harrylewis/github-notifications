@@ -13,6 +13,9 @@ var githubNotificationIndicator = {
     chrome.tabs.onUpdated.addListener(this.tabUpdatedHandler.bind(this));
     chrome.tabs.onActivated.addListener(this.tabActivatedHandler.bind(this));
     chrome.tabs.onCreated.addListener(this.tabCreatedHandler.bind(this));
+
+    this.machine = new this.Machine(this);
+    this.machine.setup();
   },
 
   Timer: function(fn, interval) {
@@ -37,6 +40,62 @@ var githubNotificationIndicator = {
 
     this.reset = function() {
       return this.stop().start();
+    };
+  },
+
+  Machine: function(context) {
+    var STATE_SETUP = 'state_setup';
+    var STATE_RUNNING = 'state_running';
+    var STATE_STOPPED = 'state_stopped';
+    var state = STATE_SETUP;
+
+    this.INPUT_CREATED = 'input_created';
+    this.INPUT_UPDATED = 'input_updated';
+    this.INPUT_REMOVED = 'input_removed';
+    this.INPUT_ACTIVATED = 'input_activated';
+
+    var TARGET_URL = 'https://github.com/notifications/beta';
+
+    var addTimer = context.addTimer.bind(context);
+    var restartTimers = context.restartTimers.bind(context);
+    var stopTimers = context.stopTimers.bind(context);
+
+    this.setup = function() {
+      var targetContext = false;
+
+      chrome.tabs.query({ url: TARGET_URL }, function(tabs) {
+        tabs.forEach(function(tab) {
+          if (tab.active) targetContext = true;
+
+          addTimer(tab.id);
+        });
+
+        this.transition('', targetContext);
+      }.bind(this));
+    };
+
+    this.transition = function(input, targetContext, tabId) {
+      switch (state) {
+        case STATE_SETUP:
+          if (targetContext) {
+            stopTimers();
+          } else {
+            restartTimers();
+          }
+
+          state = targetContext ? STATE_STOPPED : STATE_RUNNING;
+
+          break;
+        case STATE_RUNNING:
+          
+          break;
+        case STATE_STOPPED:
+          break;
+      }
+
+      console.log(state);
+
+      return this;
     };
   },
 
