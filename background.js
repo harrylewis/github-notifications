@@ -4,6 +4,7 @@ var githubNotificationIndicator = {
 
   refreshTimers: {},
   activeTabId: undefined,
+  machine: undefined,
 
   init: function() {
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
@@ -61,6 +62,7 @@ var githubNotificationIndicator = {
     var addTimer = context.addTimer.bind(context);
     var restartTimers = context.restartTimers.bind(context);
     var stopTimers = context.stopTimers.bind(context);
+    var removeTimer = context.removeTimer.bind(context);
 
     this.setup = function() {
       var targetContext = false;
@@ -138,11 +140,7 @@ var githubNotificationIndicator = {
   },
 
   tabRemovedHandler: function(tabId, removeInfo) {
-    var timer = this.refreshTimers[tabId];
-
-    if (timer) timer.stop();
-
-    delete this.refreshTimers[tabId];
+    this.machine.transition(this.machine.INPUT_REMOVED, undefined, tabId);
   },
 
   tabUpdatedHandler: function(tabId, changeInfo) {
@@ -150,36 +148,16 @@ var githubNotificationIndicator = {
 
     if (!url) return;
 
-    var timer = this.refreshTimers[tabId];
+    var targetContext = url == this.NOTIFICATIONS_URL;
 
-    if (timer) {
-      console.log('stop');
-      timer.stop();
-      delete this.refreshTimers[tabId];
-
-      return;
-    }
-
-    if (url != this.NOTIFICATIONS_URL) return;
-
-    var interval = this.REFRESH_IN_MILLISECONDS;
-
-    this.refreshTimers[tabId] = new this.Timer(function() {
-      console.log('tick');
-      chrome.tabs.reload(tabId);
-    }, interval);
+    this.machine.transition(this.machine.INPUT_UPDATED, targetContext, tabId);
   },
 
   tabActivatedHandler: function(activeInfo) {
-    var previousActiveTabId = this.activeTabId;
-    var currentActiveTabId = activeInfo.tabId;
-    var previousTimer = this.refreshTimers[previousActiveTabId];
-    var currentTimer = this.refreshTimers[currentActiveTabId];
+    var tabId = String(activeInfo.tabId);
+    var targetContext = this.tabIds().includes(tabId);
 
-    if (currentTimer) this.stopTimers();
-    if (previousTimer && !currentTimer) this.restartTimers();
-
-    this.activeTabId = activeInfo.tabId;
+    this.machine.transition(this.machine.INPUT_ACTIVATED, targetContext);
   },
 
   tabCreatedHandler: function(tab) {
