@@ -12,6 +12,7 @@ var githubNotificationIndicator = {
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
     chrome.tabs.onUpdated.addListener(this.tabUpdatedHandler.bind(this));
     chrome.tabs.onActivated.addListener(this.tabActivatedHandler.bind(this));
+    chrome.tabs.onCreated.addListener(this.tabCreatedHandler.bind(this));
   },
 
   Timer: function(fn, interval) {
@@ -91,6 +92,11 @@ var githubNotificationIndicator = {
     if (previousTimer && !currentTimer) this.restartTimers();
 
     this.activeTabId = activeInfo.tabId;
+  },
+
+  tabCreatedHandler: function(tab) {
+    console.log('--------------------');
+    console.log('New tab created.');
   },
 
   addTimer: function(tabId) {
