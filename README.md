@@ -19,3 +19,16 @@ GitHub Notifications page.
 ## TODO
 
 + [x] Implement MVP
++ [ ] Split goals into primary and secondary
++ [ ] Create state table and diagram
++ [ ] Initialize as an npm package - get familiar with that toolchain
++ [ ] Incorporate typescript
++ [ ] Get testing up and running
++ [ ] Use GitHub workflows for CI testing
++ [ ] Set up linting
++ [ ] Use state machine library
++ [ ] Use webpack for distribution (also in Chrome, Firefox store)
++ [ ] Figure out steps to publish
++ [ ] Improve README
++ [ ] Create CONTRIBUTING
++ [ ] Create CHANGELOG
