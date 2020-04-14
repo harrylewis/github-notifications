@@ -6,9 +6,9 @@ var githubNotificationIndicator = {
   activeTabId: undefined,
 
   init: function() {
-    chrome.tabs.query({ url: this.NOTIFICATIONS_URL }, function(tabs) {
-      tabs.forEach(this.tabHandler.bind(this));
-    }.bind(this));
+    /* chrome.tabs.query({ url: this.NOTIFICATIONS_URL }, function(tabs) { */
+    /*   tabs.forEach(this.tabHandler.bind(this)); */
+    /* }.bind(this)); */
     chrome.tabs.onRemoved.addListener(this.tabRemovedHandler.bind(this));
     chrome.tabs.onUpdated.addListener(this.tabUpdatedHandler.bind(this));
     chrome.tabs.onActivated.addListener(this.tabActivatedHandler.bind(this));
